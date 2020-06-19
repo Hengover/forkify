@@ -38,3 +38,11 @@ elements.searchForm.addEventListener('submit', e => {
     controlSearch();
 });
 
+elements.searchResPages.addEventListener('click', e => {
+    const btn = e.target.closest('.btn-inline'); //Return closest element   
+    if (btn) {
+        const goToPage = parseInt(btn.dataset.goto, 10); //Return data atributes string
+        searchView.clearResults();
+        searchView.renderResults(state.search.result, goToPage)
+    }
+})
