@@ -1,8 +1,10 @@
 // Global app controller
 import Search from './models/Search';
 import Recipe from './models/Recipe';
+import List from './models/List';
 import * as searchView from './views/searchViews';
 import * as recipeView from './views/recipeViews';
+import * as listView from './views/listView';
 import { elements, renderLoader, clearLoader } from './views/base';
 
 /**Global state of the app
@@ -12,6 +14,7 @@ import { elements, renderLoader, clearLoader } from './views/base';
  * = Liked recepies
  */
 const state = {};
+window.state = state;
 
 /**Search conroller */
 const controlSearch = async () => {
@@ -80,7 +83,6 @@ const controlRecipe = async () => {
         try {
            //Get recipe data and parse ingredients
             await state.recipe.getRecipe();
-            console.log(state.recipe.ingredients);
             state.recipe.parseIngredients();
 
             //Calculate servings and time
@@ -105,6 +107,40 @@ window.addEventListener('load', controlRecipe); //It fired whenever page located
 
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
+/**
+ * List controller
+ */
+
+const controlList = () => {
+    //Create a new list if there in none yet
+    if (!state.list) state.list = new List();
+
+    //Add each ingredients to the list and Ui
+    state.recipe.ingredients.forEach(el => {
+        const item = state.list.addItem(el.count, el.unit, el.ingredient);
+        listView.renderItem(item);
+    });
+}
+
+//Handle event and update list item events
+elements.shopping.addEventListener('click', e => {
+    const id = e.target.closest('.shopping__item').dataset.itemid; //Get id
+
+    //Handle the delte item
+    if(e.target.matches('.shopping__delete, .shopping__delete *')) {
+        //Delete from state
+        state.list.deleteItem(id);
+
+        //Delete from UI
+        listView.deleteItem(id);
+        
+    //Handle the count update
+    } else if (e.target.matches('.shopping__count-value')) {
+        const val = parseFloat(e.target.value, 10);
+        state.list.updateCount(id, val);
+    }
+})
+
 //Handling recipe button clicks
 elements.recipe.addEventListener('click', e => {
     if (e.target.matches('.btn-decrease, .btn-decrease *')) { //.btn-decrease * - Any child of the .btn-decrease 
@@ -118,6 +154,8 @@ elements.recipe.addEventListener('click', e => {
         //Increase button is clicked
         state.recipe.updateServings('inc');
         recipeView.updateServingsIngredients(state.recipe);
+    } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+        controlList();
     }
-    console.log(state.recipe);
 });
+
