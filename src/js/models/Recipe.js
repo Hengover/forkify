@@ -14,6 +14,7 @@ export default class Recipe {
             this.url = res.data.recipe.source_url;
             this.ingredients = res.data.recipe.ingredients;
             console.log(res);
+            
         } catch (error) {
             console.log(error);
             alert('Something went wrong :(');
@@ -47,8 +48,8 @@ export default class Recipe {
             ingredient = ingredient.replace(/ *\([^)]*\) */g, ' ');
 
             // 3. Parse ingredients into count, init and ingredients
-            const arrIng = ingredient.split(' '); //Return strin into an array
-            const unitIndex = arrIng.findIndex(el2 => units.includes(el2)); //Return index of array if there's element unitsShor array
+            const arrIng = ingredient.split(' '); //Return string into an array
+            const unitIndex = arrIng.findIndex(el2 => units.includes(el2)); //Return index of array if there's element unitsShort array
 
             let objIng;
             if (unitIndex > -1) {

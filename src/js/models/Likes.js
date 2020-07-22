@@ -30,7 +30,7 @@ export default class Likes {
     }
 
     persistData() {
-        localStorage.setItem('likes', JSON.stringify(this.likes));
+        localStorage.setItem('likes', JSON.stringify(this.likes)); //It's always be a string.c JSON.stringify-convert arrays ot a string
     }
 
     readStorage() {

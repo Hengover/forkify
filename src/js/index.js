@@ -58,7 +58,7 @@ elements.searchResPages.addEventListener('click', e => {
         searchView.clearResults();
         searchView.renderResults(state.search.result, goToPage)
     }
-})
+});
 
 
 /**
@@ -130,7 +130,7 @@ const controlList = () => {
 elements.shopping.addEventListener('click', e => {
     const id = e.target.closest('.shopping__item').dataset.itemid; //Get id
 
-    //Handle the delte item
+    //Handle the delete item
     if(e.target.matches('.shopping__delete, .shopping__delete *')) {
         //Delete from state
         state.list.deleteItem(id);
@@ -144,6 +144,37 @@ elements.shopping.addEventListener('click', e => {
         state.list.updateCount(id, val);
     }
 })
+
+//Handle delete shopping list
+const deleteList = () => {
+    if(state.list) {
+        state.list.deleteAllItem();
+        listView.clearAllItem();
+    }
+};
+
+elements.deleteList.addEventListener('click', deleteList);
+
+
+//Handle add manually item to shopping list
+
+const addItemManually = () => {
+    //Get item from input field
+    const item = listView.getItem();
+
+    if(item) {
+        //Create a new list if there in none yet
+        if (!state.list) state.list = new List();
+
+        //Add item to state
+        const element = state.list.addItemManually(item);
+
+        //Add item to UI
+        listView.renderItem(element); 
+    }
+};
+
+elements.addManually.addEventListener('click', addItemManually);
 
 /**
  * Like controller
@@ -184,6 +215,7 @@ const controlLike = () => {
 
 //Restore liked recipes on page load
 window.addEventListener('load', () => {
+    //Likes
     state.likes = new Likes();
 
     //Restore likes
@@ -194,6 +226,13 @@ window.addEventListener('load', () => {
 
     //Render the existing likes
     state.likes.likes.forEach(like => likesView.renderLike(like));
+
+    //List
+    state.list = new List();
+
+    state.list.readStorage();
+
+    state.list.items.forEach(list => listView.renderItem(list));
 })
 
 //Handling recipe button clicks

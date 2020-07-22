@@ -415,11 +415,11 @@ body {
     border: 1px solid #F59A83;
     border-radius: 50%;
     padding: 2px;
-    margin-right: 1rem;
     flex: 0 0 auto;
     margin-top: .1rem; }
   .recipe__count {
     margin-right: .5rem;
+    margin-left: 1rem;
     flex: 0 0 auto; }
   .recipe__directions {
     padding: 4rem;
@@ -487,6 +487,34 @@ body {
     visibility: hidden;
     opacity: 0;
     transition: all .5s; }
+
+  .shopping__delete-all {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+  } 
   .shopping__item:hover .shopping__delete {
     opacity: 1;
     visibility: visible; }
+
+  .shopping__add-ing {
+    margin-top: 2rem;
+    display: flex;
+    border-radius: 10rem;
+    background-color: #F9F5F3;
+  }
+
+  .shopping__input-ing {
+    border: none;
+    background: none;
+    font-size: 1.4rem;
+    padding-left: 1.5rem;
+  }
+
+  .shopping__input-ing:focus {
+    outline: none;
+  }
+
+  .shopping__add-svg {
+    margin-right: 0 !important;
+  }
